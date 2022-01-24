@@ -754,10 +754,30 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {  // NOLINT
       .def("__getitem__", wrappers::getItem<LaneletSequence>, return_internal_reference<>());
 
   class_<ConstLaneletWithStopLine>("ConstLaneletWithStopLine", "A lanelet with a stopline", no_init)
+      .def("__init__",
+          make_constructor(+[](Lanelet lanelet, Optional<ConstLineString3d> stopLine){
+                              return std::make_shared<ConstLaneletWithStopLine>(
+                                  ConstLaneletWithStopLine{
+                                    std::move(lanelet), std::move(stopLine)
+                                  }
+                              );
+                           },
+          default_call_policies(),
+          (arg("lanelet"), arg("stopLine") = Optional<ConstLineString3d>{})))
       .add_property("lanelet", &ConstLaneletWithStopLine::lanelet)
       .add_property("stopLine", &ConstLaneletWithStopLine::stopLine);
 
   class_<LaneletWithStopLine>("LaneletWithStopLine", "A lanelet with a stopline", no_init)
+      .def("__init__",
+          make_constructor(+[](Lanelet lanelet, Optional<LineString3d> stopLine){
+                              return std::make_shared<LaneletWithStopLine>(
+                                  LaneletWithStopLine{
+                                    std::move(lanelet), std::move(stopLine)
+                                  }
+                              );
+                           },
+          default_call_policies(),
+          (arg("lanelet"), arg("stopLine") = Optional<LineString3d>{})))
       .add_property("lanelet", &LaneletWithStopLine::lanelet)
       .add_property("stopLine", &LaneletWithStopLine::stopLine);
 
@@ -846,7 +866,7 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {  // NOLINT
       "AllWayStop", "An all way stop regulatory element", no_init)
       .def("__init__", make_constructor(&AllWayStop::make, default_call_policies(),
                                         (arg("id"), arg("attributes"), arg("lltsWithStop"),
-                                         arg("signs") = Optional<LineStringsOrPolygons3d>{})))
+                                         arg("signs") = LineStringsOrPolygons3d{})))
       .def(
           "lanelets", +[](AllWayStop& self) { return self.lanelets(); })
       .def(
