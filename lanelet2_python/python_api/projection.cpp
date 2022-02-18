@@ -16,7 +16,7 @@ BOOST_PYTHON_MODULE(PYTHON_API_MODULE_NAME) {  // NOLINT
          bases<Projector>>("MercatorProjector", init<Origin>("origin"));
   class_<projection::LocalCartesianProjector, std::shared_ptr<projection::LocalCartesianProjector>,  // NOLINT
          bases<Projector>>("LocalCartesianProjector", init<Origin>("origin"));
-  class_<projection::UtmProjector, std::shared_ptr<projection::UtmProjector>, bases<Projector>>("UtmProjector",
-                                                                                                init<Origin>("origin"))
+  class_<projection::UtmProjector, std::shared_ptr<projection::UtmProjector>,  // NOLINT
+         bases<Projector>>("UtmProjector", init<Origin>("origin"))
       .def(init<Origin, bool, bool>("UtmProjector(origin, useOffset, throwInPaddingArea)"));
 }

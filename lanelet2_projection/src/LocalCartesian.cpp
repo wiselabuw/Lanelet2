@@ -21,7 +21,7 @@ BasicPoint3d LocalCartesianProjector::forward(const GPSPoint& gps) const {
 
 GPSPoint LocalCartesianProjector::reverse(const BasicPoint3d& local) const {
   GPSPoint gps{0., 0., 0.};
-  this->localCartesian.Forward(local[0],
+  this->localCartesian.Reverse(local[0],
                                local[1],
                                local[2],
                                gps.lat,
